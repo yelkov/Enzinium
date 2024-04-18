@@ -52,9 +52,11 @@ public class TokenContractTest {
         assertEquals(2d, ricknillos.balanceOf(morty.getPK()), 0d);
         assertEquals(98d, ricknillos.balanceOf(rick.getPK()), 0d);
 
-        // require falla silenciosamente
         ricknillos.transfer(morty.getPK(), 500d);
-        assertEquals(2d, ricknillos.balanceOf(morty.getPK()), 0d);   
+        assertEquals(2d, ricknillos.balanceOf(morty.getPK()), 0d);
+
+        ricknillos.transfer(morty.getPK(),morty.getPK(), 500d);
+        assertEquals(2d, ricknillos.balanceOf(morty.getPK()), 0d);
     }
 
     @Test
@@ -77,5 +79,10 @@ public class TokenContractTest {
         ricknillos.payable(morty.getPK(), 8d);
         assertEquals(5d, ricknillos.balanceOf(morty.getPK()), 0d);
         assertEquals(28d, ricknillos.owner().getBalance(), 0d);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void require() throws IllegalArgumentException {
+        ricknillos.require(false);
     }
 }
