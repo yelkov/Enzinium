@@ -108,7 +108,7 @@ public class TokenContract {
             this.getBalances().compute(ownerPK, (pk, tokens) -> tokens - units);
             this.getBalances().put(recipient, balanceOf(recipient) + units);
         } catch (IllegalArgumentException e) {
-            System.out.println(e.toString()+" Owner no dispone de fondos suficientes");
+            System.out.println(e.toString() +" Owner no dispone de fondos suficientes");
         }      
     };
 
@@ -118,13 +118,13 @@ public class TokenContract {
             this.getBalances().put(sender, balanceOf(sender) - units);
             this.getBalances().put(recipient, balanceOf(recipient) + units);
         } catch (IllegalArgumentException e) {
-            System.out.println(e.toString()+" Emisor no dispone de fondos suficientes");
+            System.out.println(e.toString() +" Emisor no dispone de fondos suficientes");
         }   
     }
 
     void require(Boolean holds) throws IllegalArgumentException {
         if (! holds) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("No se ha podido realizar la transaccion.");
         }
     }
 
