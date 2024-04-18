@@ -85,4 +85,13 @@ public class TokenContractTest {
     public void require() throws IllegalArgumentException {
         ricknillos.require(false);
     }
+    @Test
+    public void require_message() {
+        try{
+            ricknillos.require(false);
+
+        }catch (IllegalArgumentException e){
+            assertEquals("No se ha podido realizar la transaccion.",e.getMessage());
+        }
+    }
 }
