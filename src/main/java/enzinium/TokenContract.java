@@ -107,8 +107,8 @@ public class TokenContract {
             require(balanceOf(ownerPK) >= units);
             this.getBalances().compute(ownerPK, (pk, tokens) -> tokens - units);
             this.getBalances().put(recipient, balanceOf(recipient) + units);
-        } catch (Exception e) {
-            // fails silently
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.toString()+" Owner no dispone de fondos suficientes");
         }      
     };
 
@@ -117,14 +117,14 @@ public class TokenContract {
             require(balanceOf(sender) >= units);
             this.getBalances().put(sender, balanceOf(sender) - units);
             this.getBalances().put(recipient, balanceOf(recipient) + units);
-        } catch (Exception e) {
-            // fails silently
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.toString()+" Emisor no dispone de fondos suficientes");
         }   
     }
 
-    private void require(Boolean holds) throws Exception {
+    void require(Boolean holds) throws IllegalArgumentException {
         if (! holds) {
-            throw new Exception();
+            throw new IllegalArgumentException();
         }
     }
 
@@ -156,8 +156,8 @@ public class TokenContract {
             Double units = Math.floor(enziniums / tokenPrice);
             transfer(recipient, units);
             this.owner.transferEZI(enziniums);
-        } catch (Exception e) {
-            // fail silently
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.toString() +" No hay suficientes enziniums");
         }
     }
 }
