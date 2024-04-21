@@ -81,14 +81,14 @@ public class TokenContractTest {
         assertEquals(28d, ricknillos.owner().getBalance(), 0d);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = IllegalTokenAmountException.class)
     public void require() throws IllegalArgumentException {
-        ricknillos.require(false);
+        ricknillos.require(false, 1d, 1d);
     }
     @Test
     public void require_message() {
         try{
-            ricknillos.require(false);
+            ricknillos.require(false, 1d, 1d);
 
         }catch (IllegalArgumentException e){
             assertEquals("No se ha podido realizar la transaccion.",e.getMessage());
