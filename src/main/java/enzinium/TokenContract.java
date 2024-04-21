@@ -104,27 +104,27 @@ public class TokenContract {
 
     public void transfer(PublicKey recipient, Double units) {
         try {
-            require(balanceOf(ownerPK) >= units);
+            require(balanceOf(ownerPK) >= units, balanceOf(ownerPK), units);
             this.getBalances().compute(ownerPK, (pk, tokens) -> tokens - units);
             this.getBalances().put(recipient, balanceOf(recipient) + units);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalTokenAmountException e) {
             System.out.println(e.toString() +" Owner no dispone de fondos suficientes");
         }      
     };
 
     public void transfer(PublicKey sender, PublicKey recipient, Double units) {
         try {
-            require(balanceOf(sender) >= units);
+            require(balanceOf(sender) >= units, balanceOf(sender), units);
             this.getBalances().put(sender, balanceOf(sender) - units);
             this.getBalances().put(recipient, balanceOf(recipient) + units);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalTokenAmountException e) {
             System.out.println(e.toString() +" Emisor no dispone de fondos suficientes");
         }   
     }
 
-    void require(Boolean holds) throws IllegalArgumentException {
+    void require(Boolean holds, double firstValue, Double secondValue) throws IllegalTokenAmountException {
         if (! holds) {
-            throw new IllegalArgumentException("No se ha podido realizar la transaccion.");
+            throw new IllegalTokenAmountException("No se ha podido realizar la transaccion.", firstValue, secondValue);
         }
     }
 
@@ -152,11 +152,11 @@ public class TokenContract {
 
     void payable(PublicKey recipient, Double enziniums) {
         try {
-            require(enziniums >= this.getTokenPrice());
+            require(enziniums >= this.getTokenPrice(), enziniums, this.getTokenPrice());
             Double units = Math.floor(enziniums / tokenPrice);
             transfer(recipient, units);
             this.owner.transferEZI(enziniums);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalTokenAmountException e) {
             System.out.println(e.toString() +" No hay suficientes enziniums");
         }
     }
