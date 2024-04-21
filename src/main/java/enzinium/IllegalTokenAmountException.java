@@ -11,4 +11,12 @@ public class IllegalTokenAmountException extends IllegalArgumentException {
         this.firstValue = firstValue;
         this.secondValue = secondValue;
     }
+
+    public PublicKey getFirstValue() {
+        return firstValue;
+    }
+
+    public Double getSecondValue() {
+        return secondValue;
+    }
 }
