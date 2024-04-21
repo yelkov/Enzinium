@@ -82,7 +82,7 @@ public class TokenContractTest {
     }
 
     @Test(expected = IllegalTokenAmountException.class)
-    public void require() throws IllegalArgumentException {
+    public void require() throws IllegalTokenAmountException {
         ricknillos.require(false, 1d, 1d);
     }
     @Test
@@ -90,8 +90,19 @@ public class TokenContractTest {
         try{
             ricknillos.require(false, 1d, 1d);
 
-        }catch (IllegalArgumentException e){
+        }catch (IllegalTokenAmountException e){
             assertEquals("No se ha podido realizar la transaccion.",e.getMessage());
+        }
+    }
+
+    @Test
+    public void requireValues() {
+        try{
+            ricknillos.require(false, 143d, 666d);
+
+        }catch (IllegalTokenAmountException e){
+            assertEquals(143d,e.getFirstValue(),1);
+            assertEquals(666d, e.getSecondValue(),1);
         }
     }
 }
